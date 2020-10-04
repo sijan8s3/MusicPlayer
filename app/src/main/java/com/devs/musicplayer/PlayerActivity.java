@@ -22,7 +22,8 @@ import java.text.CollationElementIterator;
 import java.util.ArrayList;
 
 public class PlayerActivity extends AppCompatActivity {
-    Button play, previous, next;
+    TextView play;
+    Button  previous, next;
     SeekBar seekBar;
     TextView playerSongName;
     String sName;
@@ -177,12 +178,12 @@ public class PlayerActivity extends AppCompatActivity {
                 seekBar.setMax(myMediaPlayer.getDuration());
 
                 if (myMediaPlayer.isPlaying()) {
-                    play.setBackgroundResource(R.drawable.ic_play_circle_filled_black_24dp);
+                    play.setBackgroundResource(R.drawable.play);
                     myMediaPlayer.pause();
                 }
                 else {
 
-                    play.setBackgroundResource(R.drawable.ic_pause_circle_filled_black_24dp);
+                    play.setBackgroundResource(R.drawable.pause);
                     myMediaPlayer.start();
                 }
             }
