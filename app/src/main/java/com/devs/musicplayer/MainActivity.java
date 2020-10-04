@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,items);
+        ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this,R.layout.song_list,items);
         music_list.setAdapter(myAdapter);
 
         music_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
