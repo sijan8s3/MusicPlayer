@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/background"
+    android:background="@drawable/rPhKU7"
     android:weightSum="10"
     tools:context=".PlayerActivity">
 
@@ -17,7 +17,8 @@
         app:layout_constraintHeight_percent="0.35"
         app:layout_constraintDimensionRatio="1:1"
         android:layout_gravity="center"
-        android:src="@drawable/ic_music_note_black_24dp"
+        android:src="@drawable/download1"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toTopOf="@+id/song_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -34,9 +35,10 @@
         android:marqueeRepeatLimit="marquee_forever"
         android:scrollHorizontally="true"
         android:singleLine="true"
+        android:textColor="@android:color/white"
         android:text="Song Name"
         android:textAlignment="center"
-        android:textColor="@color/colorPrimary"
+       
         android:textSize="22sp"
         app:layout_constraintBottom_toTopOf="@+id/play"
         app:layout_constraintEnd_toEndOf="parent"
@@ -62,6 +64,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toStartOf="@id/seekBar"
+        android:textColor="@android:color/white"
         android:gravity="start"
         android:text="00:00"
         app:layout_constraintBottom_toBottomOf="@+id/seekBar"
@@ -76,7 +79,7 @@
         android:layout_height="wrap_content"
         android:layout_toStartOf="@id/seekBar"
         android:text="05:00"
-
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@+id/seekBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
