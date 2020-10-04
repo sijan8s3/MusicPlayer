@@ -6,3 +6,4 @@ Just a music player which will search your device and plays the song.
 - Allows you to choose the music and plays it with android media player.
 - Can do previous, next, play, pause, volume up and down.
 - Also works on background.
+nice app i edit it later.but now i am doingit for hectoberfest.
