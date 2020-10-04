@@ -8,6 +8,6 @@ Just a music player which will search your device and plays the song.
 - Also works on background.
 
 ## Screenshots
-<img src="https://github.com/gargk747/MusicPlayer/blob/master/assets/Readme1.jpg" width="300">
+<img src="https://github.com/gargk747/MusicPlayer/blob/master/assets/readme1.jpg" width="300">
 
-<img src="https://github.com/gargk747/MusicPlayer/blob/master/assets/Readme2.jpg" width="300">
+<img src="https://github.com/gargk747/MusicPlayer/blob/master/assets/readme2.jpg" width="300">
