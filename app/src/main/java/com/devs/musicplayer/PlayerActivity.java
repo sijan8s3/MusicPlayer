@@ -24,10 +24,10 @@ public class PlayerActivity extends AppCompatActivity {
   Button previous, next;
   SeekBar seekBar;
   TextView playerSongName;
-  String sName;
+  String songName;
   static MediaPlayer myMediaPlayer;
-  int position;
-  ArrayList<File> mySongs;
+  File song;
+  Uri uri;
   Thread updateSeekBar;
   TextView curTime, totTime;
 
@@ -81,17 +81,14 @@ public class PlayerActivity extends AppCompatActivity {
     Intent i = getIntent();
     Bundle bundle = i.getExtras();
 
-    mySongs = (ArrayList) bundle.getParcelableArrayList("songs");
-    sName = mySongs.get(position).getName().toString();
-
-    String songName = i.getStringExtra("songname");
+    ArrayList<File> songs = (ArrayList) bundle.getParcelableArrayList("song");
+    song = songs.get(0);
+    songName = i.getStringExtra("songName");
 
     playerSongName.setText(songName);
     playerSongName.setSelected(true);
 
-    position = bundle.getInt("pos", 0);
-
-    Uri uri = Uri.parse(mySongs.get(position).toString());
+    uri = Uri.parse(song.toString());
 
     myMediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
     myMediaPlayer.start();
@@ -106,11 +103,9 @@ public class PlayerActivity extends AppCompatActivity {
           @Override
           public void onCompletion(MediaPlayer mediaPlayer) {
             try {
-              position = ((position + 1) % mySongs.size());
-              Uri uri = Uri.parse(mySongs.get(position).toString());
+
               myMediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
-              sName = mySongs.get(position).getName().toString();
-              playerSongName.setText(sName);
+              playerSongName.setText(songName);
               myMediaPlayer.start();
               totTime.setText(createTimeLabel(myMediaPlayer.getDuration()));
               // curTime.setText(getTimeString(position));
@@ -183,12 +178,9 @@ public class PlayerActivity extends AppCompatActivity {
           public void onClick(View v) {
             myMediaPlayer.stop();
             myMediaPlayer.release();
-            position = ((position + 1) % mySongs.size());
-            Uri uri = Uri.parse(mySongs.get(position).toString());
             myMediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
             // seekBar.setMax(myMediaPlayer.getDuration());
-            sName = mySongs.get(position).getName().toString();
-            playerSongName.setText(sName);
+            playerSongName.setText(songName);
             totTime.setText(createTimeLabel(myMediaPlayer.getDuration()));
             myMediaPlayer.start();
           }
@@ -200,11 +192,8 @@ public class PlayerActivity extends AppCompatActivity {
           public void onClick(View v) {
             myMediaPlayer.stop();
             myMediaPlayer.release();
-            position = ((position - 1) < 0) ? (mySongs.size() - 1) : (position - 1);
-            Uri uri = Uri.parse(mySongs.get(position).toString());
             myMediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
-            sName = mySongs.get(position).getName().toString();
-            playerSongName.setText(sName);
+            playerSongName.setText(songName);
             totTime.setText(createTimeLabel(myMediaPlayer.getDuration()));
             myMediaPlayer.start();
           }

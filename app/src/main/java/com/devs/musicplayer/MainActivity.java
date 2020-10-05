@@ -1,15 +1,13 @@
 package com.devs.musicplayer;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -22,18 +20,15 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-  ListView music_list;
-  String[] items;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    music_list = findViewById(R.id.music_list_view);
-
     runtimePermission();
   }
+
   // taking runtime permission for external storage
   public void runtimePermission() {
     Dexter.withContext(this)
@@ -65,38 +60,38 @@ public class MainActivity extends AppCompatActivity {
     for (File singleFile : files) {
       if (singleFile.isDirectory() && !singleFile.isHidden()) {
         arrayList.addAll(findSong(singleFile));
-      } else {
-        if (singleFile.getName().endsWith(".mp3") || singleFile.getName().endsWith(".wav")) {
-          arrayList.add(singleFile);
-        }
+      } else if (singleFile.getName().endsWith(".mp3")
+          || singleFile.getName().endsWith(".wav") && !singleFile.isHidden()) {
+        arrayList.add(singleFile);
       }
     }
     return arrayList;
   }
 
   void display() {
-    final ArrayList<File> mySongs = findSong(Environment.getExternalStorageDirectory());
-    items = new String[mySongs.size()];
+    RecyclerView recyclerView = findViewById(R.id.music_rv);
+    recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-    for (int i = 0; i < mySongs.size(); i++) {
-      items[i] = mySongs.get(i).getName().toString().replace(".mp3", "").replace("wav", "");
+    final ArrayList<File> songs = findSong(Environment.getExternalStorageDirectory());
+    final String[] songNames = new String[songs.size()];
+
+    for (int i = 0; i < songs.size(); i++) {
+      songNames[i] = songs.get(i).getName().toString().replace(".mp3", "").replace("wav", "");
     }
 
-    ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this, R.layout.song_list, items);
-    music_list.setAdapter(myAdapter);
+    SongsAdapter adapter = new SongsAdapter(songNames, this);
+    recyclerView.setAdapter(adapter);
 
-    music_list.setOnItemClickListener(
-        new AdapterView.OnItemClickListener() {
+    adapter.setOnSongClickListener(
+        new SongsAdapter.OnSongClickListener() {
           @Override
-          public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-            String songName = music_list.getItemAtPosition(position).toString();
-
+          public void onSongClick(int position) {
+            ArrayList<File> songsToSend = new ArrayList<>();
+            songsToSend.add(songs.get(position));
             startActivity(
                 new Intent(getApplicationContext(), PlayerActivity.class)
-                    .putExtra("songs", mySongs)
-                    .putExtra("songname", songName)
-                    .putExtra("pos", position));
+                    .putExtra("song", songsToSend)
+                    .putExtra("songName", songNames[position]));
           }
         });
   }
