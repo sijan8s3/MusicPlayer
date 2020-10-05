@@ -1,5 +1,5 @@
 # MusicPlayer
--> An amazing music player which will search your device and plays the song. 
+-> An amazing music player which will search and and plays the song. 
 
 ## Feautres
 ->  Display all songs(files with audio extension) in a recyclerview.
