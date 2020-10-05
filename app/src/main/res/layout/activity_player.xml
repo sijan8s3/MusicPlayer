@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/rPhKU7"
+    android:background="@drawable/rphku7"
     android:weightSum="10"
     tools:context=".PlayerActivity">
 
