@@ -1,8 +1,20 @@
 <h1 align="center"> 🎧 MusicPlayer</h1>
 
-<p align="center"> 
+<h4 align="center">
 <b><i>An amazing music player which will search your device and plays the song.</i></b>
-</p>
+</h4>
+
+<span align="center"> 
+
+<span>[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/sijan8s3/MusicPlayer/graphs/commit-activity)</span>
+<span>[![GitHub Issues](https://img.shields.io/github/issues/Naereen/StrapDown.js.svg)](https://github.com/sijan8s3/MusicPlayer/issues/)</span>
+<span>[![GitHub forks](https://img.shields.io/github/forks/Naereen/StrapDown.js.svg?style=social&label=Fork&maxAge=2592000)](https://github.com/sijan8s3/MusicPlayer/network/)</span>
+<span>[![GitHub stars](https://img.shields.io/github/stars/Naereen/StrapDown.js.svg?style=social&label=Star&maxAge=2592000)](https://github.com/sijan8s3/MusicPlayer/stargazers/)</span>
+
+</span>
+
+## 😄 Contribuiting
+Checkout our [issues](https://github.com/sijan8s3/MusicPlayer/issues) page.
 
 ## 🎵 Features
 -  Display all songs(files with audio extension) in a recyclerview.
@@ -16,6 +28,8 @@
 
 <img src="https://github.com/gargk747/MusicPlayer/blob/master/assets/readme2.jpg" width="300">
 
-<p align="center"> 
+<p align="center">
+  
 Author: [Sijan Neupane](https://github.com/sijan8s3)
+
 </p>
