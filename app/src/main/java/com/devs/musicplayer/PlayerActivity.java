@@ -20,33 +20,34 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class PlayerActivity extends AppCompatActivity {
-  TextView play;
-  Button previous, next;
-  SeekBar seekBar;
-  TextView playerSongName;
-  String songName;
-  static MediaPlayer myMediaPlayer;
-  File song;
-  Uri uri;
-  Thread updateSeekBar;
-  TextView curTime, totTime;
+    TextView play;
+    Button previous, next;
+    SeekBar seekBar;
+    TextView playerSongName;
+    String songName;
+    static MediaPlayer myMediaPlayer;
+    File song;
+    ArrayList<File> songs;
+    Uri uri;
+    Thread updateSeekBar;
+    TextView curTime, totTime;
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_player);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_player);
 
-    play = findViewById(R.id.play);
-    previous = findViewById(R.id.previous);
-    next = findViewById(R.id.next);
-    playerSongName = findViewById(R.id.song_name);
-    seekBar = findViewById(R.id.seekBar);
-    curTime = findViewById(R.id.curTime);
-    totTime = findViewById(R.id.totalTime);
+        play = findViewById(R.id.play);
+        previous = findViewById(R.id.previous);
+        next = findViewById(R.id.next);
+        playerSongName = findViewById(R.id.song_name);
+        seekBar = findViewById(R.id.seekBar);
+        curTime = findViewById(R.id.curTime);
+        totTime = findViewById(R.id.totalTime);
 
-    getSupportActionBar().setTitle("Now Playing");
-    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("Now Playing");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
     /*   updateSeekBar= new Thread() {
           @Override
@@ -72,164 +73,167 @@ public class PlayerActivity extends AppCompatActivity {
 
     */
 
-    if (myMediaPlayer != null) {
-      myMediaPlayer.stop();
-      myMediaPlayer.release();
-    }
-
-    // getting from intent
-    Intent i = getIntent();
-    Bundle bundle = i.getExtras();
-
-    ArrayList<File> songs = (ArrayList) bundle.getParcelableArrayList("song");
-    song = songs.get(0);
-    songName = i.getStringExtra("songName");
-
-    playerSongName.setText(songName);
-    playerSongName.setSelected(true);
-
-    uri = Uri.parse(song.toString());
-
-    myMediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
-    myMediaPlayer.start();
-    seekBar.setMax(myMediaPlayer.getDuration());
-    // updateSeekBar.start();
-    totTime.setText(createTimeLabel(myMediaPlayer.getDuration()));
-    // curTime.setText(getTimeString(position));
-
-    // myMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-    myMediaPlayer.setOnCompletionListener(
-        new MediaPlayer.OnCompletionListener() {
-          @Override
-          public void onCompletion(MediaPlayer mediaPlayer) {
-            try {
-
-              myMediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
-              playerSongName.setText(songName);
-              myMediaPlayer.start();
-              totTime.setText(createTimeLabel(myMediaPlayer.getDuration()));
-              // curTime.setText(getTimeString(position));
-              seekBar.setMax(myMediaPlayer.getDuration());
-              updateSeekBar.start();
-            } catch (Exception e) {
-              e.printStackTrace();
-            }
-          }
-        });
-
-    seekBar.setOnSeekBarChangeListener(
-        new SeekBar.OnSeekBarChangeListener() {
-          @Override
-          public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {}
-
-          @Override
-          public void onStartTrackingTouch(SeekBar seekBar) {}
-
-          @Override
-          public void onStopTrackingTouch(SeekBar seekBar) {
-
-            myMediaPlayer.seekTo(seekBar.getProgress());
-          }
-        });
-
-    /// new handler for seekbar and time update
-    new Thread(
-            new Runnable() {
-              @Override
-              public void run() {
-                while (myMediaPlayer != null) {
-                  try {
-                    //                        Log.i("Thread ", "Thread Called");
-                    // create new message to send to handler
-                    if (myMediaPlayer.isPlaying()) {
-                      Message msg = new Message();
-                      msg.what = myMediaPlayer.getCurrentPosition();
-                      handler.sendMessage(msg);
-                      Thread.sleep(1000);
-                    }
-                  } catch (InterruptedException e) {
-                    e.printStackTrace();
-                  }
-                }
-              }
-            })
-        .start();
-
-    play.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            seekBar.setMax(myMediaPlayer.getDuration());
-
-            if (myMediaPlayer.isPlaying()) {
-              play.setBackgroundResource(R.drawable.play);
-              myMediaPlayer.pause();
-            } else {
-
-              play.setBackgroundResource(R.drawable.pause);
-              myMediaPlayer.start();
-            }
-          }
-        });
-
-    next.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
+        if (myMediaPlayer != null) {
             myMediaPlayer.stop();
             myMediaPlayer.release();
-            myMediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
-            // seekBar.setMax(myMediaPlayer.getDuration());
-            playerSongName.setText(songName);
-            totTime.setText(createTimeLabel(myMediaPlayer.getDuration()));
-            myMediaPlayer.start();
-          }
-        });
-
-    previous.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            myMediaPlayer.stop();
-            myMediaPlayer.release();
-            myMediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
-            playerSongName.setText(songName);
-            totTime.setText(createTimeLabel(myMediaPlayer.getDuration()));
-            myMediaPlayer.start();
-          }
-        });
-  }
-
-  @Override
-  public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-    if (item.getItemId() == android.R.id.home) {
-      onBackPressed();
-    }
-    return super.onOptionsItemSelected(item);
-  }
-
-  public String createTimeLabel(int duration) {
-    String timeLabel = "";
-    int min = duration / 1000 / 60;
-    int sec = duration / 1000 % 60;
-
-    timeLabel += min + ":";
-    if (sec < 10) timeLabel += "0";
-    timeLabel += sec;
-
-    return timeLabel;
-  }
-
-  @SuppressLint("HandlerLeak")
-  private Handler handler =
-      new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-          //            Log.i("handler ", "handler called");
-          int current_position = msg.what;
-          seekBar.setProgress(current_position);
-          String cTime = createTimeLabel(current_position);
-          curTime.setText(cTime);
         }
-      };
+
+        // getting from intent
+        Intent i = getIntent();
+        Bundle bundle = i.getExtras();
+
+        songs = (ArrayList) bundle.getParcelableArrayList("songs");
+        int position = bundle.getInt("pos", 0);
+        song = songs.get(position);
+        songName = i.getStringExtra("songName");
+
+        playerSongName.setText(songName);
+        playerSongName.setSelected(true);
+
+        uri = Uri.parse(song.toString());
+
+        myMediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
+        myMediaPlayer.start();
+        seekBar.setMax(myMediaPlayer.getDuration());
+        // updateSeekBar.start();
+        totTime.setText(createTimeLabel(myMediaPlayer.getDuration()));
+        // curTime.setText(getTimeString(position));
+
+        // myMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        myMediaPlayer.setOnCompletionListener(
+                new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mediaPlayer) {
+                        try {
+
+                            myMediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
+                            playerSongName.setText(songName);
+                            myMediaPlayer.start();
+                            totTime.setText(createTimeLabel(myMediaPlayer.getDuration()));
+                            // curTime.setText(getTimeString(position));
+                            seekBar.setMax(myMediaPlayer.getDuration());
+                            updateSeekBar.start();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+        seekBar.setOnSeekBarChangeListener(
+                new SeekBar.OnSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+
+                        myMediaPlayer.seekTo(seekBar.getProgress());
+                    }
+                });
+
+        /// new handler for seekbar and time update
+        new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        while (myMediaPlayer != null) {
+                            try {
+                                //                        Log.i("Thread ", "Thread Called");
+                                // create new message to send to handler
+                                if (myMediaPlayer.isPlaying()) {
+                                    Message msg = new Message();
+                                    msg.what = myMediaPlayer.getCurrentPosition();
+                                    handler.sendMessage(msg);
+                                    Thread.sleep(1000);
+                                }
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                })
+                .start();
+
+        play.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        seekBar.setMax(myMediaPlayer.getDuration());
+
+                        if (myMediaPlayer.isPlaying()) {
+                            play.setBackgroundResource(R.drawable.play);
+                            myMediaPlayer.pause();
+                        } else {
+
+                            play.setBackgroundResource(R.drawable.pause);
+                            myMediaPlayer.start();
+                        }
+                    }
+                });
+
+        next.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        myMediaPlayer.stop();
+                        myMediaPlayer.release();
+                        myMediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
+                        // seekBar.setMax(myMediaPlayer.getDuration());
+                        playerSongName.setText(songName);
+                        totTime.setText(createTimeLabel(myMediaPlayer.getDuration()));
+                        myMediaPlayer.start();
+                    }
+                });
+
+        previous.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        myMediaPlayer.stop();
+                        myMediaPlayer.release();
+                        myMediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
+                        playerSongName.setText(songName);
+                        totTime.setText(createTimeLabel(myMediaPlayer.getDuration()));
+                        myMediaPlayer.start();
+                    }
+                });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public String createTimeLabel(int duration) {
+        String timeLabel = "";
+        int min = duration / 1000 / 60;
+        int sec = duration / 1000 % 60;
+
+        timeLabel += min + ":";
+        if (sec < 10) timeLabel += "0";
+        timeLabel += sec;
+
+        return timeLabel;
+    }
+
+    @SuppressLint("HandlerLeak")
+    private Handler handler =
+            new Handler() {
+                @Override
+                public void handleMessage(Message msg) {
+                    //            Log.i("handler ", "handler called");
+                    int current_position = msg.what;
+                    seekBar.setProgress(current_position);
+                    String cTime = createTimeLabel(current_position);
+                    curTime.setText(cTime);
+                }
+            };
 }
