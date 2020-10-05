@@ -137,6 +137,20 @@
         app:layout_constraintTop_toTopOf="@+id/play" />
 
     <Button
+        android:id="@+id/fast"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_toEndOf="@id/play"
+        android:background="@drawable/ic_fast"
+        app:layout_constraintBottom_toBottomOf="@+id/play"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.05"
+        app:layout_constraintHorizontal_bias="0.113"
+        app:layout_constraintStart_toEndOf="@+id/play"
+        app:layout_constraintTop_toTopOf="@+id/play" />
+
+    <Button
         android:id="@+id/previous"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -147,6 +161,20 @@
         app:layout_constraintBottom_toBottomOf="@+id/play"
         app:layout_constraintEnd_toStartOf="@+id/play"
         app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/play" />
+
+    <Button
+        android:id="@+id/back"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_toStartOf="@id/play"
+        android:background="@drawable/ic_backward"
+        app:layout_constraintBottom_toBottomOf="@+id/play"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@+id/play"
+        app:layout_constraintHeight_percent="0.05"
+        app:layout_constraintHorizontal_bias="0.909"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/play" />
 
