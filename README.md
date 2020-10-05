@@ -28,8 +28,7 @@ Checkout our [issues](https://github.com/sijan8s3/MusicPlayer/issues) page.
 
 <img src="https://github.com/gargk747/MusicPlayer/blob/master/assets/readme2.jpg" width="300">
 
-<p align="center">
-  
-Author: [Sijan Neupane](https://github.com/sijan8s3)
+<span align="center">
 
-</p>
+Author: [Sijan Neupane](https://github.com/sijan8s3)
+</span>
