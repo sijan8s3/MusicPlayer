@@ -7,9 +7,9 @@
 <span align="center"> 
 
 <span>[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/sijan8s3/MusicPlayer/graphs/commit-activity)</span>
-<span>[![GitHub Issues](https://img.shields.io/github/issues/Naereen/StrapDown.js.svg)](https://github.com/sijan8s3/MusicPlayer/issues/)</span>
-<span>[![GitHub forks](https://img.shields.io/github/forks/Naereen/StrapDown.js.svg?style=social&label=Fork&maxAge=2592000)](https://github.com/sijan8s3/MusicPlayer/network/)</span>
-<span>[![GitHub stars](https://img.shields.io/github/stars/Naereen/StrapDown.js.svg?style=social&label=Star&maxAge=2592000)](https://github.com/sijan8s3/MusicPlayer/stargazers/)</span>
+<span>[![GitHub Issues](https://img.shields.io/github/issues/sijan8s3/MusicPlayer.svg)](https://github.com/sijan8s3/MusicPlayer/issues/)</span>
+<span>[![GitHub forks](https://img.shields.io/github/forks/sijan8s3/MusicPlayer.svg?style=social&label=Fork&maxAge=2592000)](https://github.com/sijan8s3/MusicPlayer/network/)</span>
+<span>[![GitHub stars](https://img.shields.io/github/stars/sijan8s3/MusicPlayer.svg?style=social&label=Star&maxAge=2592000)](https://github.com/sijan8s3/MusicPlayer/stargazers/)</span>
 
 </span>
 
