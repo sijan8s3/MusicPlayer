@@ -60,8 +60,8 @@ public class MainActivity extends AppCompatActivity {
     for (File singleFile : files) {
       if (singleFile.isDirectory() && !singleFile.isHidden()) {
         arrayList.addAll(findSong(singleFile));
-      } else if (singleFile.getName().endsWith(".mp3")
-          || singleFile.getName().endsWith(".wav") && !singleFile.isHidden()) {
+      } else if ((singleFile.getName().endsWith(".mp3") || singleFile.getName().endsWith(".wav"))
+          && !singleFile.getName().startsWith("._")) {
         arrayList.add(singleFile);
       }
     }
@@ -87,11 +87,11 @@ public class MainActivity extends AppCompatActivity {
           @Override
           public void onSongClick(int position) {
             ArrayList<File> songsToSend = new ArrayList<>();
-            songsToSend.add(songs.get(position));
             startActivity(
                 new Intent(getApplicationContext(), PlayerActivity.class)
-                    .putExtra("song", songsToSend)
-                    .putExtra("songName", songNames[position]));
+                    .putExtra("songs", songs)
+                    .putExtra("songName", songNames[position])
+                    .putExtra("pos", position));
           }
         });
   }

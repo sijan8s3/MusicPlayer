@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.SongsViewHolder> {
-  private static final String TAG = "SongsAdapter";
 
   String[] songNames;
   Context mContext;
