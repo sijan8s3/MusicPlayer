@@ -53,17 +53,18 @@ class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.SongsViewHolder> {
       super(itemView);
       song_tv = itemView.findViewById(R.id.song_tv);
 
-      song_tv.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-          if (onSongClickListener!=null) {
-            int position = getAdapterPosition();
-            if (position!=RecyclerView.NO_POSITION) {
-              onSongClickListener.onSongClick(position);
+      song_tv.setOnClickListener(
+          new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              if (onSongClickListener != null) {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                  onSongClickListener.onSongClick(position);
+                }
+              }
             }
-          }
-        }
-      });
+          });
     }
   }
 }
