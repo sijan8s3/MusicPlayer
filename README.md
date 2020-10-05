@@ -11,3 +11,6 @@
 <img src="https://github.com/gargk747/MusicPlayer/blob/master/assets/readme1.jpg" width="300">
 
 <img src="https://github.com/gargk747/MusicPlayer/blob/master/assets/readme2.jpg" width="300">
+
+## Authors
+* **Sijan Neupane**  - [sijan8s3](https://github.com/sijan8s3) 
