@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.SongsViewHolder> {
-  private static final String TAG = "SongsAdapter";
 
   String[] songNames;
   Context mContext;
@@ -54,18 +53,17 @@ class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.SongsViewHolder> {
       super(itemView);
       song_tv = itemView.findViewById(R.id.song_tv);
 
-      song_tv.setOnClickListener(
-          new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-              if (onSongClickListener != null) {
-                int position = getAdapterPosition();
-                if (position != RecyclerView.NO_POSITION) {
-                  onSongClickListener.onSongClick(position);
-                }
-              }
+      song_tv.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+          if (onSongClickListener!=null) {
+            int position = getAdapterPosition();
+            if (position!=RecyclerView.NO_POSITION) {
+              onSongClickListener.onSongClick(position);
             }
-          });
+          }
+        }
+      });
     }
   }
 }
