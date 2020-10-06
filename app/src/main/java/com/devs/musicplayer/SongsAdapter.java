@@ -67,4 +67,5 @@ class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.SongsViewHolder> {
                     });
         }
     }
+
 }

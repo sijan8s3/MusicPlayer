@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         runtimePermission();
+
     }
 
     // taking runtime permission for external storage
@@ -96,4 +97,5 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
+
 }
