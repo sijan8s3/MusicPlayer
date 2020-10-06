@@ -19,3 +19,10 @@ jobs:
           args: "--skip-sorting-imports --replace"
           # Recommended if you use MacOS:
           # githubToken: ${{ secrets.GITHUB_TOKEN }}
+if (tests.proximity) {
+   window.addEventListener('userproximity', function (event) {
+      if (event.near) {
+         audio.paused ? audio.play() : audio.pause();
+      }
+   });
+}
