@@ -156,6 +156,9 @@ public class PlayerActivity extends AppCompatActivity {
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
+                             catch (IllegalStateException e){
+                                e.printStackTrace();
+                            }
                         }
                     }
                 })
