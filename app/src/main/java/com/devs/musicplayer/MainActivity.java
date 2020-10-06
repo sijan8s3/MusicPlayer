@@ -1,15 +1,13 @@
 package com.devs.musicplayer;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -22,82 +20,80 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-  ListView music_list;
-  String[] items;
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-    music_list = findViewById(R.id.music_list_view);
+        runtimePermission();
+    }
 
-    runtimePermission();
-  }
-  // taking runtime permission for external storage
-  public void runtimePermission() {
-    Dexter.withContext(this)
-        .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-        .withListener(
-            new PermissionListener() {
-              @Override
-              public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
-                display();
-              }
+    // taking runtime permission for external storage
+    public void runtimePermission() {
+        Dexter.withContext(this)
+                .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                .withListener(
+                        new PermissionListener() {
+                            @Override
+                            public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
+                                display();
+                            }
 
-              @Override
-              public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {}
+                            @Override
+                            public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
+                            }
 
-              @Override
-              public void onPermissionRationaleShouldBeShown(
-                  PermissionRequest permissionRequest, PermissionToken permissionToken) {
-                permissionToken.continuePermissionRequest();
-              }
-            })
-        .check();
-  }
+                            @Override
+                            public void onPermissionRationaleShouldBeShown(
+                                    PermissionRequest permissionRequest, PermissionToken permissionToken) {
+                                permissionToken.continuePermissionRequest();
+                            }
+                        })
+                .check();
+    }
 
-  // searching and adding files to the array
-  public ArrayList<File> findSong(File file) {
-    ArrayList<File> arrayList = new ArrayList<>();
+    // searching and adding files to the array
+    public ArrayList<File> findSong(File file) {
+        ArrayList<File> arrayList = new ArrayList<>();
 
-    File[] files = file.listFiles();
-    for (File singleFile : files) {
-      if (singleFile.isDirectory() && !singleFile.isHidden()) {
-        arrayList.addAll(findSong(singleFile));
-      } else {
-        if (singleFile.getName().endsWith(".mp3") || singleFile.getName().endsWith(".wav")) {
-          arrayList.add(singleFile);
+        File[] files = file.listFiles();
+        for (File singleFile : files) {
+            if (singleFile.isDirectory() && !singleFile.isHidden()) {
+                arrayList.addAll(findSong(singleFile));
+            } else if ((singleFile.getName().endsWith(".mp3") || singleFile.getName().endsWith(".wav"))
+                    && !singleFile.getName().startsWith("._")) {
+                arrayList.add(singleFile);
+            }
         }
-      }
-    }
-    return arrayList;
-  }
-
-  void display() {
-    final ArrayList<File> mySongs = findSong(Environment.getExternalStorageDirectory());
-    items = new String[mySongs.size()];
-
-    for (int i = 0; i < mySongs.size(); i++) {
-      items[i] = mySongs.get(i).getName().toString().replace(".mp3", "").replace("wav", "");
+        return arrayList;
     }
 
-    ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this, R.layout.song_list, items);
-    music_list.setAdapter(myAdapter);
+    void display() {
+        RecyclerView recyclerView = findViewById(R.id.music_rv);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-    music_list.setOnItemClickListener(
-        new AdapterView.OnItemClickListener() {
-          @Override
-          public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        final ArrayList<File> songs = findSong(Environment.getExternalStorageDirectory());
+        final String[] songNames = new String[songs.size()];
 
-            String songName = music_list.getItemAtPosition(position).toString();
+        for (int i = 0; i < songs.size(); i++) {
+            songNames[i] = songs.get(i).getName().toString().replace(".mp3", "").replace("wav", "");
+        }
 
-            startActivity(
-                new Intent(getApplicationContext(), PlayerActivity.class)
-                    .putExtra("songs", mySongs)
-                    .putExtra("songname", songName)
-                    .putExtra("pos", position));
-          }
-        });
-  }
+        SongsAdapter adapter = new SongsAdapter(songNames, this);
+        recyclerView.setAdapter(adapter);
+
+        adapter.setOnSongClickListener(
+                new SongsAdapter.OnSongClickListener() {
+                    @Override
+                    public void onSongClick(int position) {
+                        ArrayList<File> songsToSend = new ArrayList<>();
+                        startActivity(
+                                new Intent(getApplicationContext(), PlayerActivity.class)
+                                        .putExtra("songs", songs)
+                                        .putExtra("songName", songNames[position])
+                                        .putExtra("pos", position));
+                    }
+                });
+    }
 }
