@@ -1,4 +1,4 @@
-# I make amazing MusicPlayer for all
+## I make amazing MusicPlayer for all
 -> An amazing music player which will search your device and plays the song. 
 
 ## Feautres
