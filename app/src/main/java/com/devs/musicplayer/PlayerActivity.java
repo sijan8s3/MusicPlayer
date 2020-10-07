@@ -45,7 +45,7 @@ public class PlayerActivity extends AppCompatActivity {
         curTime = findViewById(R.id.curTime);
         totTime = findViewById(R.id.totalTime);
 
-        getSupportActionBar().setTitle("Now Playing");
+        getSupportActionBar().setTitle(getString(R.string.now_playing));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
