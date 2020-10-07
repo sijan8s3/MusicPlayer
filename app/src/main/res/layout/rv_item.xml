@@ -6,7 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
+    android:layout_marginTop="10dp"
+    android:background="@drawable/item"
     android:orientation="vertical">
+
     <androidx.cardview.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
@@ -21,10 +24,12 @@
             android:layout_width="360dp"
             android:layout_height="80dp"
             />
+
     <TextView
         android:id="@+id/song_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:textColor="@android:color/white"
         android:padding="10dp"
         android:textSize="20sp" />
@@ -37,5 +42,11 @@
         android:layout_height="30dp"
 
          />
+
+
+        android:textColor="@color/white"
+        android:layout_margin="5dp"
+        android:textSize="17sp" />
+
 
 </LinearLayout>
