@@ -153,10 +153,7 @@ public class PlayerActivity extends AppCompatActivity {
                                     handler.sendMessage(msg);
                                     Thread.sleep(1000);
                                 }
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                             catch (IllegalStateException e){
+                            } catch (InterruptedException | IllegalStateException e) {
                                 e.printStackTrace();
                             }
                         }
