@@ -4,9 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -19,7 +25,7 @@ import android.widget.TextView;
 import java.io.File;
 import java.util.ArrayList;
 
-public class PlayerActivity extends AppCompatActivity {
+public class PlayerActivity extends AppCompatActivity implements Playable {
     int position;
     TextView play;
     Button previous, next;
@@ -31,6 +37,9 @@ public class PlayerActivity extends AppCompatActivity {
     ArrayList<File> songs;
     Thread updateSeekBar;
     TextView curTime, totTime;
+    NotificationManager notificationManager;
+    boolean isPlaying = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +57,12 @@ public class PlayerActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Now Playing");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            createChannel();
+            registerReceiver(broadcastReceiver, new IntentFilter("TRACKS_TRACKS"));
+            startService(new Intent(getBaseContext(),OnClearFromRecentService.class));
+        }
 
     /*   updateSeekBar= new Thread() {
           @Override
@@ -93,6 +108,7 @@ public class PlayerActivity extends AppCompatActivity {
         Uri uri = Uri.parse(song.toString());
 
         myMediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
+        CreateNotification.createNotification(PlayerActivity.this,songName,R.drawable.ic_baseline_pause,position,songs.size()-1);
         myMediaPlayer.start();
         seekBar.setMax(myMediaPlayer.getDuration());
         // updateSeekBar.start();
@@ -209,8 +225,19 @@ public class PlayerActivity extends AppCompatActivity {
                         playerSongName.setText(songName);
                         totTime.setText(createTimeLabel(myMediaPlayer.getDuration()));
                         myMediaPlayer.start();
+
                     }
                 });
+    }
+    private void createChannel(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel channel = new NotificationChannel(CreateNotification.CHANNEL_ID,"Music", NotificationManager.IMPORTANCE_LOW);
+
+            notificationManager = getSystemService(NotificationManager.class);
+            if (notificationManager != null){
+                notificationManager.createNotificationChannel(channel);
+            }
+        }
     }
 
     @Override
@@ -245,4 +272,64 @@ public class PlayerActivity extends AppCompatActivity {
                     curTime.setText(cTime);
                 }
             };
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getExtras().getString("actionname");
+
+            switch (action){
+                case CreateNotification.ACTION_PREVIOUS:
+                    onTrackPrevious();
+                    break;
+                case CreateNotification.ACTION_NEXT:
+                    onTrackNext();
+                    break;
+                case CreateNotification.ACTION_PLAY:
+                    if (isPlaying){
+                        onTrackPause();
+                    }else{
+                        onTrackPlay();
+                    }
+                    break;
+            }
+        }
+    };
+    @Override
+    public void onTrackPrevious() {
+        position--;
+        CreateNotification.createNotification(PlayerActivity.this,songName,R.drawable.ic_baseline_pause,position,songs.size()-1);
+        songs.get(position).getName();
+    }
+
+    @Override
+    public void onTrackPause() {
+        CreateNotification.createNotification(PlayerActivity.this,songName,R.drawable.ic_baseline_play_arrow,position,songs.size()-1);
+        play.setBackgroundResource(R.drawable.ic_baseline_play_arrow);
+        songs.get(position).getName();
+        isPlaying = false;
+    }
+
+    @Override
+    public void onTrackPlay() {
+        CreateNotification.createNotification(PlayerActivity.this,songName,R.drawable.ic_baseline_pause,position,songs.size()-1);
+        play.setBackgroundResource(R.drawable.ic_baseline_pause);
+        songs.get(position).getName();
+        isPlaying = true;
+    }
+
+    @Override
+    public void onTrackNext() {
+        position++;
+        CreateNotification.createNotification(PlayerActivity.this,songName,R.drawable.ic_baseline_pause,position,songs.size()-1);
+        songs.get(position).getName();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            notificationManager.cancelAll();
+        }
+        unregisterReceiver(broadcastReceiver);
+    }
 }
