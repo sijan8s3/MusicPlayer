@@ -5,7 +5,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 
@@ -21,14 +24,16 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    NotificationManager notificationManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         runtimePermission();
-
     }
+
 
     // taking runtime permission for external storage
     public void runtimePermission() {
@@ -94,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
                                         .putExtra("songs", songs)
                                         .putExtra("songName", songNames[position])
                                         .putExtra("pos", position));
+
                     }
                 });
     }
