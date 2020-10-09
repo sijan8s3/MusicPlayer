@@ -172,6 +172,9 @@ public class PlayerActivity extends AppCompatActivity implements Playable {
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
+                             catch (IllegalStateException e){
+                                e.printStackTrace();
+                            }
                         }
                     }
                 })
