@@ -54,7 +54,7 @@ public class PlayerActivity extends AppCompatActivity implements Playable {
         curTime = findViewById(R.id.curTime);
         totTime = findViewById(R.id.totalTime);
 
-        getSupportActionBar().setTitle("Now Playing");
+        getSupportActionBar().setTitle(getString(R.string.now_playing));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -169,10 +169,7 @@ public class PlayerActivity extends AppCompatActivity implements Playable {
                                     handler.sendMessage(msg);
                                     Thread.sleep(1000);
                                 }
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                             catch (IllegalStateException e){
+                            } catch (InterruptedException | IllegalStateException e) {
                                 e.printStackTrace();
                             }
                         }

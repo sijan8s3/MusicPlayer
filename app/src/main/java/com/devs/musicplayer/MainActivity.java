@@ -64,10 +64,14 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<File> arrayList = new ArrayList<>();
 
         File[] files = file.listFiles();
+
+        if(files == null || files.length == 0){
+            return arrayList;
+        }
         for (File singleFile : files) {
             if (singleFile.isDirectory() && !singleFile.isHidden()) {
                 arrayList.addAll(findSong(singleFile));
-            } else if ((singleFile.getName().endsWith(".mp3") || singleFile.getName().endsWith(".wav"))
+            } else if ((singleFile.getName().endsWith(getString(R.string.mp3)) || singleFile.getName().endsWith(getString(R.string.wav)))
                     && !singleFile.getName().startsWith("._")) {
                 arrayList.add(singleFile);
             }
@@ -83,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         final String[] songNames = new String[songs.size()];
 
         for (int i = 0; i < songs.size(); i++) {
-            songNames[i] = songs.get(i).getName().toString().replace(".mp3", "").replace("wav", "");
+            songNames[i] = songs.get(i).getName().replace(getString(R.string.mp3), "").replace(getString(R.string.wav), "");
         }
 
         SongsAdapter adapter = new SongsAdapter(songNames, this);
@@ -93,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
                 new SongsAdapter.OnSongClickListener() {
                     @Override
                     public void onSongClick(int position) {
-                        ArrayList<File> songsToSend = new ArrayList<>();
                         startActivity(
                                 new Intent(getApplicationContext(), PlayerActivity.class)
                                         .putExtra("songs", songs)
