@@ -10,10 +10,41 @@
     android:weightSum="10"
     tools:context=".PlayerActivity">
 
-    <ImageView
-        android:id="@+id/imageView"
+
+    <Button
+        android:id="@+id/fav"
         android:layout_width="0dp"
         android:layout_height="0dp"
+
+        android:layout_toStartOf="@id/play"
+        android:background="@drawable/ic_fav"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.436" />
+
+    <Button
+        android:id="@+id/playlist"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_toStartOf="@id/play"
+        android:background="@drawable/ic_playlist"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.844" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="224dp"
+        android:layout_height="220dp"
+
         android:layout_gravity="center"
         android:scaleType="centerCrop"
         android:src="@drawable/download1"
@@ -21,10 +52,13 @@
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.35"
+
+        app:layout_constraintHorizontal_bias="0.55"
+
         app:layout_constraintHorizontal_bias="0.5"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <TextView
         android:id="@+id/song_name"
@@ -182,6 +216,20 @@
         app:layout_constraintHorizontal_bias="0.909"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/play" />
+
+    <SearchView
+        android:layout_width="379dp"
+        android:layout_height="44dp"
+
+        android:background="@color/search"
+        android:gravity="center"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        app:layout_constraintVertical_bias="0.023" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
