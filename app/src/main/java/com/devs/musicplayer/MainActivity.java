@@ -5,7 +5,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 
@@ -21,78 +24,84 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
+    NotificationManager notificationManager;
 
-    runtimePermission();
-  }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-  // taking runtime permission for external storage
-  public void runtimePermission() {
-    Dexter.withContext(this)
-        .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-        .withListener(
-            new PermissionListener() {
-              @Override
-              public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
-                display();
-              }
-
-              @Override
-              public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {}
-
-              @Override
-              public void onPermissionRationaleShouldBeShown(
-                  PermissionRequest permissionRequest, PermissionToken permissionToken) {
-                permissionToken.continuePermissionRequest();
-              }
-            })
-        .check();
-  }
-
-  // searching and adding files to the array
-  public ArrayList<File> findSong(File file) {
-    ArrayList<File> arrayList = new ArrayList<>();
-
-    File[] files = file.listFiles();
-    for (File singleFile : files) {
-      if (singleFile.isDirectory() && !singleFile.isHidden()) {
-        arrayList.addAll(findSong(singleFile));
-      } else if ((singleFile.getName().endsWith(".mp3") || singleFile.getName().endsWith(".wav"))
-          && !singleFile.getName().startsWith("._")) {
-        arrayList.add(singleFile);
-      }
-    }
-    return arrayList;
-  }
-
-  void display() {
-    RecyclerView recyclerView = findViewById(R.id.music_rv);
-    recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-    final ArrayList<File> songs = findSong(Environment.getExternalStorageDirectory());
-    final String[] songNames = new String[songs.size()];
-
-    for (int i = 0; i < songs.size(); i++) {
-      songNames[i] = songs.get(i).getName().toString().replace(".mp3", "").replace("wav", "");
+        runtimePermission();
     }
 
-    SongsAdapter adapter = new SongsAdapter(songNames, this);
-    recyclerView.setAdapter(adapter);
 
-    adapter.setOnSongClickListener(
-        new SongsAdapter.OnSongClickListener() {
-          @Override
-          public void onSongClick(int position) {
-            ArrayList<File> songsToSend = new ArrayList<>();
-            startActivity(
-                new Intent(getApplicationContext(), PlayerActivity.class)
-                    .putExtra("songs", songs)
-                    .putExtra("songName", songNames[position])
-                    .putExtra("pos", position));
-          }
-        });
-  }
+    // taking runtime permission for external storage
+    public void runtimePermission() {
+        Dexter.withContext(this)
+                .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                .withListener(
+                        new PermissionListener() {
+                            @Override
+                            public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
+                                display();
+                            }
+
+                            @Override
+                            public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
+                            }
+
+                            @Override
+                            public void onPermissionRationaleShouldBeShown(
+                                    PermissionRequest permissionRequest, PermissionToken permissionToken) {
+                                permissionToken.continuePermissionRequest();
+                            }
+                        })
+                .check();
+    }
+
+    // searching and adding files to the array
+    public ArrayList<File> findSong(File file) {
+        ArrayList<File> arrayList = new ArrayList<>();
+
+        File[] files = file.listFiles();
+        for (File singleFile : files) {
+            if (singleFile.isDirectory() && !singleFile.isHidden()) {
+                arrayList.addAll(findSong(singleFile));
+            } else if ((singleFile.getName().endsWith(".mp3") || singleFile.getName().endsWith(".wav"))
+                    && !singleFile.getName().startsWith("._")) {
+                arrayList.add(singleFile);
+            }
+        }
+        return arrayList;
+    }
+
+    void display() {
+        RecyclerView recyclerView = findViewById(R.id.music_rv);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        final ArrayList<File> songs = findSong(Environment.getExternalStorageDirectory());
+        final String[] songNames = new String[songs.size()];
+
+        for (int i = 0; i < songs.size(); i++) {
+            songNames[i] = songs.get(i).getName().toString().replace(".mp3", "").replace("wav", "");
+        }
+
+        SongsAdapter adapter = new SongsAdapter(songNames, this);
+        recyclerView.setAdapter(adapter);
+
+        adapter.setOnSongClickListener(
+                new SongsAdapter.OnSongClickListener() {
+                    @Override
+                    public void onSongClick(int position) {
+                        ArrayList<File> songsToSend = new ArrayList<>();
+                        startActivity(
+                                new Intent(getApplicationContext(), PlayerActivity.class)
+                                        .putExtra("songs", songs)
+                                        .putExtra("songName", songNames[position])
+                                        .putExtra("pos", position));
+
+                    }
+                });
+    }
+
 }
