@@ -1,7 +1,7 @@
 <h1 align="center"> 🎧 MusicPlayer</h1>
 
 <h4 align="center">
-<b><i>An amazing music player which will search your device and plays the song.</i></b>
+<b><i>An amazing music player which will search your device and play the song.</i></b>
 </h4>
 
 <span align="center"> 
